@@ -24,13 +24,13 @@ def dff_df(df):
 dict = {
     TencentItem: "tencant",
     Tencentinfo: "tencant_info",
-    i_fund_info: "i_fund_info_gm"
+    i_fund_info: "d_fund_info"
 }
 
 dict_engine = {
     TencentItem: engine5,
     Tencentinfo: engine5,
-    i_fund_info: engine_data_test
+    i_fund_info: engine5
 }
 
 
@@ -39,6 +39,7 @@ class TencentpositionSpider(object):
         c = pd.DataFrame([item])
         d = dff_df(c)
         print(d)
-        to_sql(dict[type(item)], engine_data_test, d, type="update")
+        print(type(item))
+        to_sql(dict[type(item)], dict_engine[type(item)], d, type="update")
         return item
 

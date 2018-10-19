@@ -68,7 +68,7 @@ class TencentpositionSpider(scrapy.Spider):
         item['recommendation_end'] = response.xpath('//*[@id="main"]/div[3]/table/tr[5]/td/text()').extract()[0]
         item['fund_manager_nominal'] = response.xpath('//*[@id="main"]/div[3]/table/tr[14]/td/text()').extract()[0]
         item['fund_custodian'] = response.xpath('//*[@id="main"]/div[3]/table/tr[15]/td/text()').extract()[0]
-        item['data_source'] = '000001'
+        item['source_id'] = '000001'
         item["foundation_date"] = str_time(item["foundation_date"])
         try:
             if "至" in item["recommendation_start"]:
