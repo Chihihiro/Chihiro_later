@@ -3,13 +3,23 @@ import scrapy
 import http.cookiejar
 import urllib.request, urllib.parse, urllib.error
 from Tencant.engine import *
-
+from Tencant.items import d_org_info
 
 def reverse_baseN(string, b):
     _sign = "0123456789abcdefghijklmnopqrstuvwxyz"
     if len(string) == 1:
         return _sign.index(string)
     return _sign.index(string[-1]) + reverse_baseN(string[:-1], b) * b
+
+def str_time(zwtime):
+    try:
+        t = time.strptime(zwtime, '%Y年%m月%d日')
+        r = time.strftime('%Y-%m-%d', t)
+    except BaseException:
+        return None
+    else:
+        pass
+    return r
 
 
 def login():
@@ -62,9 +72,16 @@ class TencentpositionSpider(scrapy.Spider):
             '/html/body/div[5]/div/div[1]/div[2]/table/tbody/tr/td[@class="t-company"]/a/@href').extract()
         for org_id in ll:
             org_url = "https://www.jfz.com{}".format(org_id)
-            yield scrapy.Request(org_url, callback=self.parse_org, headers=self.headers, cookies=self.cookies)
+            yield scrapy.Request(org_url, callback=self.parse_org, meta={"org_id": org_id}, headers=self.headers, cookies=self.cookies)
+
+
+
+
+
 
     def parse_org(self, response):
+        print(response)
+
         ll = response.xpath('//*[@id="yxz"]/div[2]/table/tbody/tr/td[@width="190"]/a/@href').extract()
         ids = []
         for i in ll:
@@ -82,3 +99,35 @@ class TencentpositionSpider(scrapy.Spider):
         df = data.drop(["P"], axis=1)
         print(data)
         to_sql('__id_search', engine5, df, type="update")
+
+        item = d_org_info()
+        org_id = response.meta['org_id']
+        item['org_id'] = org_id
+        item['org_full_name'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[1]/span[2]/@title').extract()
+        item['foundation_date'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[2]/span[2]/text()').extract()
+        item['registered_capital'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[5]/span[2]/text()').extract()
+        item['management_scale'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[8]/span[2]/text()').extract()
+        item['manage_funds'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[3]/span[2]/text()').extract()
+        item['profit_fund'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[6]/span[2]/text()').extract()
+        item['profit_share'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[9]/span[2]/span/text()').extract()
+        item['core_member'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[4]/span[2]/text()').extract()
+        item['representative_products'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[7]/span[2]/a/text()').extract()
+        item['representative_products_yield'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[10]/span[2]/text()').extract()
+
+        # item['company_profile'] = response.xpath().extract()
+        item['org_funds'] = ','.join(response.xpath('//*[@id="box1"]/table/tbody/tr'
+                                            '/td/a/@title').extract())+','+','.join(
+            response.xpath('//*[@id="yqs"]/div[2]/table/tbody/tr[1]/td[1]/a/@title').extract()
+        )
+        try:
+            item["foundation_date"] = str_time(item["foundation_date"][0])
+        except BaseException:
+            item["foundation_date"] = None
+        else:
+            pass
+
+        print(item["foundation_date"])
+
+        yield item
+
+
