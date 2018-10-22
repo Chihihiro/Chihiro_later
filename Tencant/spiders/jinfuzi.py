@@ -59,7 +59,7 @@ class TencentpositionSpider(scrapy.Spider):
     cookies = login()
 
     def start_requests(self):
-        for page in range(1, 500, 1):
+        for page in range(1, 300, 1):
             if page == 1:
                 start_url = "https://www.jfz.com/simu/company.html"
             else:
