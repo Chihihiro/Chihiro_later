@@ -32,7 +32,7 @@ dict_engine = {
     TencentItem: engine5,
     Tencentinfo: engine5,
     i_fund_info: engine5,
-    d_org_info: engine5
+    d_org_info: engine_crawl
 }
 
 
