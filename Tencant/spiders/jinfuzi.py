@@ -80,11 +80,14 @@ class TencentpositionSpider(scrapy.Spider):
 
 
     def parse_org(self, response):
-        print(response)
-
         ll = response.xpath('//*[@id="yxz"]/div[2]/table/tbody/tr/td[@width="190"]/a/@href').extract()
+        qs = response.xpath('/html/body/div[6]/div/div[2]/div[1]/div[1]/div[2]/div/div[6]/div/div[2]/div[2]/div[2]/table/tbody/tr/td[@width="200"]/a/@href').extract()
         ids = []
         for i in ll:
+            id = re.search('/simu/p-(.+?).html', i).group(1)
+            ids.append(id)
+
+        for i in qs:
             id = re.search('/simu/p-(.+?).html', i).group(1)
             ids.append(id)
 
@@ -102,7 +105,7 @@ class TencentpositionSpider(scrapy.Spider):
 
         item = d_org_info()
         org_id = response.meta['org_id']
-        item['org_id'] = org_id
+        item['org_id'] = re.search('/simu/c-(.+?).html', org_id).group(1)
         item['org_full_name'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[1]/span[2]/@title').extract()
         item['foundation_date'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[2]/span[2]/text()').extract()
         item['registered_capital'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[5]/span[2]/text()').extract()
@@ -111,17 +114,20 @@ class TencentpositionSpider(scrapy.Spider):
         item['profit_fund'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[6]/span[2]/text()').extract()
         item['profit_share'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[9]/span[2]/span/text()').extract()
         item['core_member'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[4]/span[2]/text()').extract()
-        item['representative_products'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[7]/span[2]/a/text()').extract()
-        item['representative_products_yield'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[10]/span[2]/text()').extract()
+        # item['representative_products'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[7]/span[2]/a/text()').extract()
+        # item['representative_products_yield'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[10]/span[2]/text()').extract()
+        item['company_profile'] = response.xpath('/html/body/div[6]/div/div[2]/div[1]/div[1]/div[2]/div/div[3]/div[2]/p/text()').extract()
+        item['org_team'] = response.xpath('/html/body/div[6]/div/div[2]/div[1]/div[1]/div[2]/div/div[4]/div[2]/p/text()').extract()
+        item['whole_show'] = response.xpath('/html/body/div[6]/div/div[2]/div[1]/div[1]/div[2]/div/div[5]/div[2]/p/text()').extract()
+        # item[] = response.xpath().extract()
+        item['source_id'] = '020002'
 
-        # item['company_profile'] = response.xpath().extract()
-        item['org_funds'] = ','.join(response.xpath('//*[@id="box1"]/table/tbody/tr'
-                                            '/td/a/@title').extract())+','+','.join(
-            response.xpath('//*[@id="yqs"]/div[2]/table/tbody/tr[1]/td[1]/a/@title').extract()
-        )
+        item['org_funds'] = ','.join(response.xpath('//*[@id="yqs"]/div[2]/table/tbody/tr/td/a/@title').extract() + response.xpath('//*[@id="yxz"]/div[2]/table/tbody/tr/td/a/@title').extract())
         try:
             item["foundation_date"] = str_time(item["foundation_date"][0])
-        except BaseException:
+            item['org_funds'] = None if not item['org_funds'].strip() else item['org_funds']
+        except BaseException as e:
+            print(e)
             item["foundation_date"] = None
         else:
             pass

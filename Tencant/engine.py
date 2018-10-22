@@ -7,6 +7,7 @@ from Tencant.iosjk import *
 
 engine_crawl = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format(
     'root', 'chihiro123', '47.107.35.189', 3306, 'crawl', ), connect_args={"charset": "utf8"}, echo=True, )
+
 engine5 = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format('root', 'chihiro123', 'localhost', 3306, 'crawl', ),
                         connect_args={"charset": "utf8"}, echo=True, )
 
