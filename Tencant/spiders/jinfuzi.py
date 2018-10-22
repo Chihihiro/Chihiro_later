@@ -38,7 +38,7 @@ def login():
         response = opener.open(request)
     except urllib.error.URLError as e:
         print(e.code, ':', e.reason)
-    cookie_jar.save(ignore_discard=True, ignore_expires=True)  # 保存cookie到cookie.txt中
+    # cookie_jar.save(ignore_discard=True, ignore_expires=True)  # 保存cookie到cookie.txt中
 
     for item in cookie_jar:
         print('Name = ' + item.name)
