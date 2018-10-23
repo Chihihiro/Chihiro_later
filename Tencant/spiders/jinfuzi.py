@@ -118,7 +118,7 @@ class TencentpositionSpider(scrapy.Spider):
         # item['representative_products_yield'] = response.xpath('/html/body/div[6]/div/div[1]/div[2]/ul/li[10]/span[2]/text()').extract()
         item['company_profile'] = response.xpath('/html/body/div[6]/div/div[2]/div[1]/div[1]/div[2]/div/div[3]/div[2]/p/text()').extract()
         item['org_team'] = response.xpath('/html/body/div[6]/div/div[2]/div[1]/div[1]/div[2]/div/div[4]/div[2]/p/text()').extract()
-        item['whole_show'] = response.xpath('/html/body/div[6]/div/div[2]/div[1]/div[1]/div[2]/div/div[5]/div[2]/p/text()').extract()
+        # item['whole_show'] = response.xpath('/html/body/div[6]/div/div[2]/div[1]/div[1]/div[2]/div/div[5]/div[2]/p/text()').extract()
         # item[] = response.xpath().extract()
         item['source_id'] = '020002'
 

@@ -82,7 +82,7 @@ class d_org_info(scrapy.Item):
     company_profile = scrapy.Field()#公司简介
     org_funds = scrapy.Field()#旗下基金
     org_team = scrapy.Field()#团队
-    whole_show = scrapy.Field()#核心人员
+    # whole_show = scrapy.Field()#核心人员
     # fund_custodian = scrapy.Field()
     # init_nav = scrapy.Field()
     # init_raise = scrapy.Field()
