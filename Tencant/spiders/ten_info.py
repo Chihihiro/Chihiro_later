@@ -36,4 +36,5 @@ class TencentpositionSpider(scrapy.Spider):
         item['duty'] = response.xpath('//ul[@class="squareli"]').xpath("string(.)").extract()[0]
         item['work'] = response.xpath('//ul[@class="squareli"]').xpath("string(.)").extract()[1]
         item["id"] = id
+        print(item)
         yield item
