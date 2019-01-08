@@ -14,11 +14,7 @@ import pandas as pd
 from Tencant.items import TencentItem, Tencentinfo, i_fund_info, d_org_info
 
 
-def dff_df(df):
-    df2 = df.T
-    df4 = df2[df2[0] != ""]
-    dff = df4.T
-    return dff
+
 
 
 dict = {
@@ -34,7 +30,11 @@ dict_engine = {
     i_fund_info: engine5,
     d_org_info: engine_crawl
 }
-
+def dff_df(df):
+    df2 = df.T
+    df4 = df2[df2[0] != ""]
+    dff = df4.T
+    return dff
 
 def clean(x):
     if type(x) is list:

@@ -12,6 +12,7 @@ engine5 = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format('root', 'chihiro
                         connect_args={"charset": "utf8"}, echo=True, )
 
 
+
 # engine_basetest = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format('root','','localhost',3306,'base.test', ), connect_args={"charset": "utf8"},echo=True,)
 # engine_base = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format('jr_admin_qxd', 'jr_admin_qxd', '182.254.128.241', 4171, 'base', ),connect_args={"charset": "utf8"}, echo=True, )
 # engine_crawl_private = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format('jr_admin_qxd', 'jr_admin_qxd', '182.254.128.241', 4171, 'crawl_private', ),connect_args={"charset": "utf8"}, echo=True, )

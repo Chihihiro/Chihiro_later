@@ -12,4 +12,4 @@ spiders = [
 
 if __name__ == '__main__':
     for i in spiders:
-        execute(i.split())
+        execute('scrapy crawl nihongo'.split())

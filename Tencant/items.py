@@ -13,6 +13,9 @@ class Tencentinfo(scrapy.Item):
     id = scrapy.Field()
     pass
 
+class niko(scrapy.Item):
+    pass
+
 
 class TencentItem(scrapy.Item):
 
